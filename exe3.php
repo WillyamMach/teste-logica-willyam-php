@@ -1,10 +1,8 @@
 <?php
-    $vector = [
-        200, 300, 1000, 600, 100, 0, 0,
-        200, 300, 1000, 600, 100, 0, 0,
-        200, 300, 1000, 600, 100, 0, 0,
-        200, 300, 1000, 600, 100, 0, 0
-    ];
+    $dados_json = file_get_contents('dados.json');
+
+    $vector = json_decode($dados_json, true);
+
 
     $iMedia = 0;
     $soma = 0;
@@ -13,29 +11,27 @@
     $maior = -1;
     $media = 0;
 
-    for($i = 0; $i < count($vector); $i++) {
-        if($vector[$i] != 0) {
-            if($menor > $vector[$i]) {
-                $menor = $vector[$i];
+    foreach($vector as $key => $value) {
+        if($value['valor'] != 0) {
+            if($menor > $value['valor']) {
+                $menor = $value['valor'];
             }
 
-            if($maior < $vector[$i]) {
-                $maior = $vector[$i];
+            if($maior < $value['valor']) {
+                $maior = $value['valor'];
                 
             }
 
             $iMedia++;
-            $soma += $vector[$i];
+            $soma += $value['valor'];
             $media = $soma / $iMedia; 
         }
     }
 
-    for($j = 0; $j < count($vector); $j++) {
-        if($vector[$j] > $media) {
+    foreach($vector as $key => $value) {
+        if($value['valor'] > $media) {
             $faturamentoMaiorQueAMedia++;
         }
     }
-
-    echo $menor.PHP_EOL;
-    echo $maior.PHP_EOL;
-    echo $faturamentoMaiorQueAMedia.PHP_EOL;
+    
+    echo "menor => ".$menor.'<br>'."maior => ".$maior."<br>"."Faturamento maior que a média => ".$faturamentoMaiorQueAMedia;
